@@ -1,38 +1,125 @@
 .App {
   text-align: center;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.wrapper {
+  position: relative;
 }
+/* .container {
+  max-height: 80vh;
+  min-height: 400px;
+  height: fit-content;
+  max-width: 400px;
+  margin: auto;
+  margin-block: 30px;
+  overflow: auto;
+  position: relative;
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+} */
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  max-height: 80vh;
+  min-height: 400px;
+  height: fit-content;
+  max-width: 400px;
+  margin: auto;
+  margin-block: 30px;
+  overflow: auto;
+  position: relative;
+  background-color: rgba(201, 203, 223, 0.473);
+  border-radius: 20px;
+
+
 }
 
-.App-link {
-  color: #61dafb;
+.form{
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-block-start: 20px;
+  max-width: 400px;
+  gap: 25px;
+  border-radius: 20px;
+  padding: 20px;
+  height: 100%;
+  overflow: auto; 
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-item {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 10px;
+  text-align: left;
 }
+
+.input {
+  padding: 15px;
+  border-radius: 2px;
+  width: 300px;
+  display: flex;
+  border:none;
+  border-bottom:1px solid;
+  background-color: rgba(0, 0, 0, 0.068);
+}
+
+.radio-group{
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  gap: 8px;
+}
+
+
+.summary {
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+  margin: auto;
+  gap: 2px;
+  border-radius: 20px;
+  max-width: 350px;
+  width: 100%;
+
+}
+
+.total {
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  translate: -50% ;
+  font-size: larger;
+  font-weight: 600;
+  background-color: cornflowerblue;
+  width: 80%;
+  height: 30px;
+  border-radius: 15px 15px 0px 0px;
+
+}
+
+
+.go-back-button {
+  position: absolute;
+  top: 5px; /* Adjust the top position as needed */
+  left: 5px; /* Adjust the left position as needed */
+  background-color: #007BFF; /* Button background color */
+  color: #fff; /* Text color */
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Style the button on hover */
+.go-back-button:hover {
+  background-color: #0056b3; /* Change the background color on hover */
+}
+
