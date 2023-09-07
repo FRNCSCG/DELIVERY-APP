@@ -41,7 +41,6 @@
 .form{
   display: flex;
   flex-direction: column;
-  margin: auto;
   margin-block-start: 20px;
   max-width: 400px;
   gap: 25px;
@@ -123,3 +122,15 @@
   background-color: #0056b3; /* Change the background color on hover */
 }
 
+.submit-button {
+  padding: 15px;
+  background-color: #a0c0e2;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  width: 100px;
+}
+
+.go-back-button:hover {
+  background-color: #0056b3; /* Change the background color on hover */
+}

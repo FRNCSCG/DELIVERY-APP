@@ -408,7 +408,7 @@ function App() {
           {seccion !== "resumen" && (
             /* Boton submit */
             <div className='form-item'>
-              <button type='submit'>ACEPTAR</button>          
+              <button className='submit-button' type='submit'>Aceptar</button>          
             </div>
           )}
       </form>
