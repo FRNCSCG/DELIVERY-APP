@@ -84,6 +84,7 @@ function App() {
   
   };
 
+  //ir para atras
   const goBack = () => {
     switch (seccion) {
       case "pago":
@@ -101,14 +102,14 @@ function App() {
 
   return (
     
-    <div className="App">
+    <div className="App bg">
       
-      <div>
-        <h1 style={{marginBlock:'1px'}}>Lo que sea!</h1>
+      <div className='logo glassmorphism'>
+        <h1 style={{display:'flex', margin:'auto'}}>Lo que sea!</h1>
       </div>
       
 
-      <div className='container'>
+      <div className='container glassmorphism'>
         
 
         
@@ -137,15 +138,29 @@ function App() {
               </div>
 
               {/* Foto */}
+
+              
               <div className='form-item'>
-                <label htmlFor='foto'>Foto del producto (opcional)</label>
-                <input
-                  id='foto'
-                  name='foto'
-                  type='file'
-                  accept="image/*"
-                  onChange={e => setFoto(e.target.files[0])}
-                />
+                <div>Foto del producto (opcional)</div>
+                <div className='subirfoto glassmorphism' style={{display: "flex", flexDirection:'column', margin:'auto'}}>
+
+                  <label style={{display: "flex", flexDirection:'row', margin:'auto', gap:'5px'}} htmlFor='foto'>
+                  <p>Subir</p>
+                  <svg style={{display: "flex", margin:'auto'}} width="40px" data-darkreader-inline-stroke="" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  </label>
+                  
+                  <input
+                    id='foto'
+                    name='foto'
+                    type='file'
+                    hidden
+                    accept="image/*"
+                    onChange={e => setFoto(e.target.files[0])}
+                  />
+
+                </div>
               </div>
 
               {/* direccion comercio */}
@@ -256,11 +271,11 @@ function App() {
 
               {/* Fecha entrega */}
               <div className='form-item'>
-                <div style={{display: 'flex', flexDirection:'row', gap:'60px'}}>
+                <div style={{display: 'flex', flexDirection:'row', gap:'30px'}}>
                   <b>Fecha de entrega</b> 
                   <div>
-                    <input type="checkbox" checked={antesPosible} onChange={() => setAntesPosible(!antesPosible)}/>          
-                    <label>Lo antes posible</label>
+                    <input type="checkbox" id='antes' checked={antesPosible} onChange={() => setAntesPosible(!antesPosible)}/>          
+                    <label htmlFor='antes'>Lo antes posible</label>
                   </div>
                 </div>
                 <input className='input' type='date' required disabled={antesPosible} value={fechaEntrega} onChange={event => setFechaEntrega(event.target.value)}/>
@@ -416,8 +431,8 @@ function App() {
       <div style={{height:'30px'}}/>
 
         {/* Total pagar */}
-        <div className='total'>
-          <div>TOTAL A PAGAR: {total}</div>
+        <div className='total glassmorphism'>
+          <div>Total a pagar: {total}</div>
         </div>
       </div>
         
