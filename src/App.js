@@ -51,7 +51,7 @@ function App() {
 
 
   const addDistanceDocument = async () => {
-    // Calculate a random distance between 1000 and 2000
+    // Calculate a random distance between 1000 and 20000000000000000000000
     var distance = Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
 
     // Create the data for the document
