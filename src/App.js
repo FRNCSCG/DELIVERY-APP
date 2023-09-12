@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import { db } from './firebase.js';
+import { arrayUnion, doc, getDoc, runTransaction,} from "firebase/firestore"; 
 
 
 function App() {
@@ -28,14 +30,89 @@ function App() {
   const [vtoTarjeta, setVtoTarjeta] = useState("")
   const [cvc, setCvc] = useState("")
   const [montoEfectivo, setMontoEfectivo] = useState("")
+  const [vuelto, setVuelto]  = useState("")
+
 
   const [fechaEntrega, setFechaEntrega] = useState("")
   const [antesPosible, setAntesPosible] = useState(false)
 
   const [prev, setPrev] = useState(null);
 
+  const [distancia, setDistancia] = useState("")
 
-  const today = new Date().toISOString().split('T')[0]; // Fecha hoy
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+
+
+  const addDistanceDocument = async () => {
+    // Calculate a random distance between 1000 and 2000
+    var distance = Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
+
+    // Create the data for the document
+    const data = {
+      address1: `${ciudad} ${calle} ${numero}`,
+      address2: `${miCiudad} ${miCalle} ${miNumero}`,
+      distance: distance,
+    };
+
+    try {
+      // Get a reference to the "distances" document
+      const distancesDocRef = doc(db, 'distances', '1');
+
+      // Use a transaction to check if the pair already exists
+      await runTransaction(db, async (transaction) => {
+        const distancesDoc = await transaction.get(distancesDocRef);
+
+        // Check if the pair already exists in the "distancias" array
+        const existingDistancias = distancesDoc.data()?.distancias || [];
+        const pairExists = existingDistancias.some(
+          (item) =>
+            item.address1 === data.address1 && item.address2 === data.address2
+        );
+
+        if (!pairExists) {
+          // If the pair doesn't exist, update the document with the new data
+          transaction.update(distancesDocRef, {
+            distancias: arrayUnion(data),
+          });
+          setDistancia(data.distance);
+          setTotal(distance/100 * 50)
+
+          console.log('distance added successfully');
+        }
+        else{
+          const existingDistancesDoc = await getDoc(distancesDocRef);
+          const existingDistancias = existingDistancesDoc.data().distancias;
+                      
+          // Find the existing distance based on address1 and address2
+          const existingDistance = existingDistancias.find(
+            (item) =>
+              item.address1 === data.address1 && item.address2 === data.address2
+          );
+
+          if (existingDistance) {
+            distance = (existingDistance.distance);
+            setTotal(distance/100 * 50)
+
+          } else {
+            console.log("Existing distance not found.");
+          }
+
+          console.log("ya existe!")
+        }
+
+      });
+
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  };
 
   // formato fecha
   const handleExpirationDateChange = (event) => {
@@ -52,8 +129,6 @@ function App() {
     }
   };
 
-
-
   // pa que muestre la foto
   useEffect(() => {
     if (foto) {
@@ -65,18 +140,31 @@ function App() {
     
   }, [foto])
 
+useEffect(() => {
+  calcularVuelto()
+
+
+}, [montoEfectivo])
+
+  const calcularVuelto = () => {
+    setVuelto(montoEfectivo-total)
+  }
 
   // form submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("ahi ta")
 
     switch (seccion) {
       case "datos":
+        addDistanceDocument()
         setSeccion("pago")
         break;
       case "pago":
-        setSeccion("resumen")
+        if (parseFloat(montoEfectivo) < parseFloat(total)) {
+          alert('Ingresá un numero mayor o igual al total a pagar!');
+        } else {
+          setSeccion("resumen")
+        }
         break;
       default:
         break;
@@ -87,6 +175,9 @@ function App() {
   const goBack = () => {
     switch (seccion) {
       case "pago":
+        setTotal("")
+        setFormaPago("")
+        setMontoEfectivo("")
         setSeccion("datos")
         break;
       case "resumen":
@@ -96,6 +187,80 @@ function App() {
         break;
     }
   }
+
+  const handleCityChange = (event) => {
+    setCiudad(event.target.value)
+    setMiCiudad(event.target.value)
+  }
+
+  // calculo distancia
+  // useEffect(() => {
+  //   const addDistanceDocument = async () => {
+  //     // Calculate a random distance between 1000 and 2000
+  //     const distance = Math.floor(Math.random() * 2000) + 1;
+  
+  //     // Create the data for the document
+  //     const data = {
+  //       address1: `${ciudad} ${calle} ${numero}`,
+  //       address2: `${miCiudad} ${miCalle} ${miNumero}`,
+  //       distance: distance,
+  //     };
+  
+  //     try {
+  //       // Get a reference to the "distances" document
+  //       const distancesDocRef = doc(db, 'distances', '1');
+  
+  //       // Use a transaction to check if the pair already exists
+  //       await runTransaction(db, async (transaction) => {
+  //         const distancesDoc = await transaction.get(distancesDocRef);
+  
+  //         // Check if the pair already exists in the "distancias" array
+  //         const existingDistancias = distancesDoc.data()?.distancias || [];
+  //         const pairExists = existingDistancias.some(
+  //           (item) =>
+  //             item.address1 === data.address1 && item.address2 === data.address2
+  //         );
+  
+  //         if (!pairExists) {
+  //           // If the pair doesn't exist, update the document with the new data
+  //           transaction.update(distancesDocRef, {
+  //             distancias: arrayUnion(data),
+  //           });
+  //           setDistancia(data.distance);
+            
+
+
+  //         }
+  //         else{
+  //           const existingDistancesDoc = await getDoc(distancesDocRef);
+  //           const existingDistancias = existingDistancesDoc.data().distancias;
+                        
+  //           // Find the existing distance based on address1 and address2
+  //           const existingDistance = existingDistancias.find(
+  //             (item) =>
+  //               item.address1 === data.address1 && item.address2 === data.address2
+  //           );
+
+  //           if (existingDistance) {
+  //             setDistancia(existingDistance.distance);
+  //           } else {
+  //             console.log("Existing distance not found.");
+  //           }
+
+  //           console.log("ya existe!")
+  //         }
+  //       });
+  
+  //       console.log('Document added successfully');
+  //     } catch (error) {
+  //       console.error('Error adding document: ', error);
+  //     }
+  //   };
+  
+  //   if (calle !== "" && numero !== "" && ciudad !== "" && miCalle !== "" && miNumero !== "" && miCiudad !== "") {
+  //     addDistanceDocument()
+  //   }
+  // }, [calle, numero, ciudad, miCalle, miNumero, miCiudad ])
 
 
 
@@ -111,10 +276,11 @@ function App() {
       <div className='container glassmorphism'>
         
         <form className='form' onSubmit={handleSubmit}>
+            
             {/* boton de back */}
             {seccion !== "datos" && <button  type="button" onClick={() => goBack()} className="go-back-button">
-              <svg data-darkreader-inline-stroke="" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"></path>
+              <svg aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" strokeLinecap="round" strokeLinejoin="round"></path>
               </svg>
             </button>}
             
@@ -138,13 +304,13 @@ function App() {
 
                 {/* Foto */}
                 <div className='form-item'>
-                  <div>Foto del producto (opcional)</div>
+                <label htmlFor='foto'>Foto del producto (opcional)</label>
                   <div className='subirfoto glassmorphism' style={{display: "flex", flexDirection:'column', margin:'auto'}}>
 
                     <label style={{display: "flex", flexDirection:'row', margin:'auto', gap:'5px'}} htmlFor='foto'>
                     <p>Subir</p>
-                    <svg style={{display: "flex", margin:'auto'}} width="40px" data-darkreader-inline-stroke="" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <svg style={{display: "flex", margin:'auto'}} width="40px" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" strokeLinecap="round" strokeLinejoin="round"></path>
                     </svg>
                     </label>
                     
@@ -192,7 +358,9 @@ function App() {
                     id='ciudad'
                     name='ciudad'
                     value={ciudad}
-                    onChange={event => setCiudad(event.target.value)}
+                    // onChange={event => setCiudad(event.target.value)}
+                    onChange={handleCityChange}
+
                     required
                   >
                     <option value="">Selecciona tu ciudad</option>
@@ -244,9 +412,9 @@ function App() {
                     className='input'
                     id='miCiudad'
                     name='miCiudad'
-                    value={miCiudad}
-                    onChange={event => setMiCiudad(event.target.value)}
+                    value={ciudad}
                     required
+                    disabled
                   >
                     <option value="">Selecciona tu ciudad</option>
                     <option value="Cordoba">Cordoba</option>
@@ -264,7 +432,10 @@ function App() {
                     value={miReferencia}
                     onChange={event => setMiReferencia(event.target.value)}
                   />
+
+                  <div>{distancia}</div>
                 </div>
+
 
                 {/* Fecha entrega */}
                 <div className='form-item'>
@@ -275,7 +446,7 @@ function App() {
                       <label htmlFor='antes'>Lo antes posible</label>
                     </div>
                   </div>
-                  <input className='input' type='date' min={today} required disabled={antesPosible} value={fechaEntrega} onChange={event => setFechaEntrega(event.target.value)}/>
+                  <input className='input' type='datetime-local' min={minDateTime} required disabled={antesPosible} value={fechaEntrega} onChange={event => setFechaEntrega(event.target.value)}/>
                 </div>
               </>
 
@@ -294,6 +465,7 @@ function App() {
                         name="tipopago"
                         value="tarjeta"
                         onChange={event => setFormaPago(event.target.value)}
+                        required
                       />
                       <label htmlFor="tarjeta">Tarjeta debito/credito</label>
                     </div>
@@ -312,7 +484,7 @@ function App() {
                   
                   {formaPago === "efectivo" && 
                     <>
-                      <label htmlFor='montoEfectivo'>Monto</label>
+                      <label htmlFor='montoEfectivo'>Con cuanto vas a pagar?</label>
                       <input
                         className='input'
                         id='montoEfectivo'
@@ -322,7 +494,15 @@ function App() {
                         onChange={event => setMontoEfectivo(event.target.value)}
                         pattern="\d*"
                         required
+                        min={parseFloat(total)}
                       />
+                      {vuelto > 0  ? 
+                      <label style={{width:"300px", fontSize:'15px'}} >Vuelto: ${parseFloat(vuelto).toFixed(2)}</label>
+                      :
+                      <label style={{width:"300px"}}>Ingresá un numero mayor o igual al total a pagar!</label>
+
+                      }
+
                     </>
                   }   
 
@@ -336,7 +516,7 @@ function App() {
                         type='text'
                         value={nroTarjeta}
                         onChange={event => setNroTarjeta(event.target.value)}
-                        pattern="4\d{12,15}" //empieza en 4
+                        pattern="4\d{12,15}" //empieza en 4 (visa)
                         maxLength="16" //maximo 16 digit
                         minLength="13" //minimo 13 digit
                         required
@@ -428,9 +608,12 @@ function App() {
         <div style={{height:'30px'}}/>
 
         {/* Total pagar */}
-        <div className='total glassmorphism'>
-          <div>Total a pagar: {total}</div>
-        </div>
+        {(seccion !== "datos" && total) &&  (
+          <div className='total glassmorphism swing-in-bottom-bck'>
+            <div>Total a pagar: ${parseFloat(total).toFixed(2)}</div>
+          </div>
+        )}
+
       
       </div>
 

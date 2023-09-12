@@ -27,7 +27,19 @@
   right: 0;
   bottom: 0;
   left: 0;
-  /* background-image: radial-gradient(circle at 30% 86%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 8%, transparent 8%, transparent 92%), radial-gradient(circle at 55% 100%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 8%, transparent 8%, transparent 92%), radial-gradient(circle at 40% 75%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 7% 99%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 69% 76%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 2% 35%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 14% 48%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), radial-gradient(circle at 28% 87%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), radial-gradient(circle at 65% 14%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), radial-gradient(circle at 51% 36%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), radial-gradient(circle at 6% 93%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), linear-gradient(135deg, #a1887a, #1d18d0); */
+  background-image: radial-gradient(circle at 30% 86%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 8%, transparent 8%, transparent 92%), 
+                    radial-gradient(circle at 55% 100%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 8%, transparent 8%, transparent 92%), 
+                    radial-gradient(circle at 40% 75%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), 
+                    radial-gradient(circle at 7% 99%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), 
+                    radial-gradient(circle at 69% 76%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), 
+                    radial-gradient(circle at 2% 35%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), 
+                    radial-gradient(circle at 14% 48%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 6%, transparent 6%, transparent 94%), 
+                    radial-gradient(circle at 28% 87%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), 
+                    radial-gradient(circle at 65% 14%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), 
+                    radial-gradient(circle at 51% 36%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), 
+                    radial-gradient(circle at 6% 93%, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 4%, transparent 4%, transparent 96%), 
+                    linear-gradient(160deg, #007090, #007190);
+  background-color: #007090;
 }
 
 
@@ -52,11 +64,12 @@ s
   padding: 8px;
   margin-top: 10px;
   border-radius: 10px;
+  background-color: #01A7C2;
 
 }
 
 .subirfoto {
-  background-color: #3e7cbe3d;
+  background-color: #EAEBED;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
@@ -77,8 +90,8 @@ s
   border-radius: 10px;
   overflow: auto;
   position: relative;
-  background-color: rgba(201, 203, 223, 0.13);
-  backdrop-filter: blur(20px);
+  background-color: #01A7C2;
+  backdrop-filter: blur(15px);
   scrollbar-width: thin;
   scrollbar-color: #e3e3e3 transparent;
 
@@ -113,7 +126,7 @@ s
   display: flex;
   border:none;
   border-bottom:1px solid;
-  background-color: rgba(0, 0, 0, 0.123);
+  background-color: rgba(0, 0, 0, 0.089);
 }
 
 .radio-group{
@@ -143,7 +156,7 @@ s
   translate: -50% ;
   font-size: larger;
   font-weight: 600;
-  background-color: cornflowerblue;
+  background-color: #EAEBED;
   width: 80%;
   height: 30px;
   border-radius: 15px 15px 0px 0px;
@@ -155,8 +168,8 @@ s
   position: absolute;
   top: 5px; /* Adjust the top position as needed */
   left: 5px; /* Adjust the left position as needed */
-  background-color: #007BFF; /* Button background color */
-  color: #fff; /* Text color */
+  background-color: #A3BAC3; /* Button background color */
+  color: #006989; /* Text color */
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -166,12 +179,13 @@ s
 
 /* Style the button on hover */
 .go-back-button:hover {
-  background-color: #0056b3; /* Change the background color on hover */
+  background-color: #adc5ce;
+
 }
 
 .submit-button {
   padding: 15px;
-  background-color: #a0c0e2;
+  background-color: #A3BAC3;
   border: none;
   border-radius: 8px;
   font-weight: 700;
@@ -180,17 +194,13 @@ s
 
 .submit-button:hover {
   padding: 15px;
-  background-color: #a0c0e2;
+  background-color: #adc5ce;
   border: none;
   border-radius: 8px;
   font-weight: 700;
   width: 100px;
 }
 
-
-.go-back-button:hover {
-  background-color: #0056b3; /* Change the background color on hover */
-}
 
 input, select {
   -webkit-box-sizing: border-box;
@@ -199,3 +209,21 @@ input, select {
 }
 
 
+
+.swing-in-bottom-bck {
+	animation: swing-in-bottom-bck 0.6s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+}
+
+
+@keyframes swing-in-bottom-bck {
+  0% {
+    transform: rotateX(-70deg);
+    transform-origin: bottom;
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0);
+    transform-origin: bottom;
+    opacity: 1;
+  }
+}
