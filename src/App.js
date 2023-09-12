@@ -49,9 +49,8 @@ function App() {
   const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
 
-
   const addDistanceDocument = async () => {
-    // Calculate a random distance between 1000 and 20000000000000000000000
+    // Calculate a random distance between 1000 and 2000
     var distance = Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
 
     // Create the data for the document
@@ -262,7 +261,26 @@ useEffect(() => {
   //   }
   // }, [calle, numero, ciudad, miCalle, miNumero, miCiudad ])
 
+  function handleFileChange(e) {
+    const selectedFile = e.target.files[0];
+  
+    // Check if a file is selected
+    if (!selectedFile) {
+      return;
+    }
+  
+    // Check the file size
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
 
+    if (selectedFile.size > maxSizeInBytes) {
+      alert('El tamaño del archivo supera el tamaño máximo permitido (5MB).');
+      e.target.value = null; // Clear the file input
+      return;
+    }
+  
+    // If the file size is within the limit, you can proceed with handling the file.
+    setFoto(selectedFile);
+  }
 
   return (
     
@@ -319,8 +337,9 @@ useEffect(() => {
                       name='foto'
                       type='file'
                       hidden
-                      accept="image/*"
-                      onChange={e => setFoto(e.target.files[0])}
+                      accept="image/jpeg"                      
+                      // onChange={e => setFoto(e.target.files[0])}
+                      onChange={handleFileChange}
                     />
 
                   </div>
@@ -603,7 +622,7 @@ useEffect(() => {
                 }
                 <div style={{height:'10px'}}/>
 
-                <div><b>Fecha de Entrega:</b> {antesPosible ? 'Lo antes posible' : fechaEntrega}</div>
+                <div><b>Fecha de Entrega:</b> {antesPosible ? 'Lo antes posible' : fechaEntrega.replace("T", " ")}</div>
               </div>
             )}
             
