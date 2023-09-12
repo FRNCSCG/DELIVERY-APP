@@ -577,23 +577,33 @@ useEffect(() => {
             {seccion === "resumen" && (
               <div className='summary'> 
                 <h2>Resumen del pedido</h2>
-                <div>Encargo: {encargo}</div>
-                <div style={{display:'flex', flexDirection:'column'}}>
-                  Foto:
-                  <img src={prev} alt={foto} style={{height: "200px", width: "200px", objectFit:'cover', marginInline:'auto'}} />
-                </div>
-                <div>Domicilio del comercio: {calle} {numero}, {ciudad}</div>
-                <div>Referencia: {referencia}</div>
-                <div>Mi domicilio: {miCalle} {miNumero}, {miCiudad}</div>
-                <div>Referencia: {miReferencia}</div>
-                <div>Forma de Pago: {formaPago}</div>
-                {/* <div>Número de Tarjeta: {nroTarjeta}</div> */}
-                {/* <div>Nombre del Titular: {nombreTitular}</div>
-                <div>Vencimiento de Tarjeta: {vtoTarjeta}</div> */}
-                {/* <div>CVC: {cvc}</div> */}
-                <div>Monto en Efectivo: {montoEfectivo}</div>
-                <div>Total: {total}</div>
-                <div>Fecha de Entrega: {antesPosible ? 'Lo antes posible' : fechaEntrega}</div>
+                <div><b>Encargo:</b> {encargo}</div>
+                {foto && 
+                  <div style={{display:'flex', flexDirection:'column', padding:'10px'}}>
+                    <b>Foto:</b>
+                  <img src={prev} alt={foto} style={{height: "200px", width: "200px", objectFit:'cover', marginInline:'auto', }} />
+                </div>}
+                <div style={{height:'10px'}}/>
+
+                <div><b>Domicilio del comercio:</b> {calle} {numero}, {ciudad}</div>
+                <div><b>Referencia:</b> {referencia}</div>
+                <div style={{height:'10px'}}/>
+
+                <div><b>Mi domicilio:</b> {miCalle} {miNumero}, {miCiudad}</div>
+                <div><b>Referencia:</b> {miReferencia}</div>
+                <div style={{height:'10px'}}/>
+
+                <div><b>Total:</b> {total}</div>
+                <div><b>Forma de Pago:</b> {formaPago === "tarjeta" ? "Visa terminada en *"+ nroTarjeta.slice(-3) : "Efectivo"}</div>
+                {formaPago === "efectivo" && 
+                  <>
+                    <div><b>Vas a pagar con:</b> ${montoEfectivo}</div>
+                    <div><b>Tu vuelto:</b> ${vuelto}</div>
+                  </>
+                }
+                <div style={{height:'10px'}}/>
+
+                <div><b>Fecha de Entrega:</b> {antesPosible ? 'Lo antes posible' : fechaEntrega}</div>
               </div>
             )}
             
